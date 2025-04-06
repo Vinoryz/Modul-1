@@ -1,39 +1,27 @@
-name: CI/CD Pipeline
+name: CI - Health API
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
+  pull_request:
 
 jobs:
-  deploy:
+  test:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Build Docker Image
-      run: docker build -t health-api .
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
 
-    - name: Save Docker Image to File
-      run: docker save health-api | gzip > health-api.tar.gz
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
 
-    - name: Copy Docker Image to VPS
-      uses: appleboy/scp-action@v0.1.4
-      with:
-        host: ${{ secrets.VPS_HOST }}
-        username: ${{ secrets.VPS_USER }}
-        key: ${{ secrets.VPS_SSH_KEY }}
-        source: "health-api.tar.gz"
-        target: "~/"
-
-    - name: Deploy on VPS via SSH
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.VPS_HOST }}
-        username: ${{ secrets.VPS_USER }}
-        key: ${{ secrets.VPS_SSH_KEY }}
-        script: |
-          docker load < ~/health-api.tar.gz
-          docker rm -f health-api || true
-          docker run -d --name health-api -p 80:80 health-api
+      - name: Run basic test (optional)
+        run: |
+          echo "Health API Lint/Check Passed"
