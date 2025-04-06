@@ -51,7 +51,15 @@ jobs:
       - name: Install Railway CLI
         run: npm install -g @railway/cli
 
-      - name: Deploy with Railway
-        run: railway up --service netics-ci-cd
+      - name: Login to Railway
+        run: railway login --apiKey ${{ secrets.RAILWAY_TOKEN }}
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+
+      - name: Set Railway project
+        run: railway link --project ${{ secrets.RAILWAY_PROJECT_ID }}
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_PROJECT_ID }}
+
+      - name: Deploy with Railway
+        run: railway up
