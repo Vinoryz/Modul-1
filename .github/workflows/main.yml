@@ -22,20 +22,3 @@ jobs:
 
       - name: Run basic test
         run: echo "Tests passed"
-
-  deploy:
-    name: 🚀 Deploy to Railway
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Install Railway CLI
-        run: npm install -g @railway/cli
-
-      - name: Deploy with Railway
-        run: railway up --project 7114899e-56d8-4eb6-a9f5-7f00fc6a59a6 --service Modul-1
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
