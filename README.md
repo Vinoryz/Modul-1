@@ -29,10 +29,11 @@ Dengan nama main.yml
 
 Di dalamnya terdapat kode seperti berikut:
 ```
- deploy:
+deploy:
     name: Deploy to Railway
     runs-on: ubuntu-latest
-
+    needs: build
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -45,4 +46,4 @@ Di dalamnya terdapat kode seperti berikut:
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 ```
-Potongan kode di atas digunakan untuk mendeploy tiap kali ada perubahan di dalam repository ini.
+Potongan kode di atas digunakan untuk mendeploy tiap kali ada perubahan di dalam repository ini. Deploy akan dilakukan setelah build berhasil dilakukan.
