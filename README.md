@@ -24,4 +24,25 @@ Penggunaan python untuk membuat Flask-based API untuk menampilkan nama, nrp, sta
    ![image](https://github.com/user-attachments/assets/8420368f-f583-4b07-b017-a07bfebb1bbe)
 
 ## 3. CI/CD dengan GitHub Actions
+File untuk GitHub Actions terletak pada .github/workflows/
+Dengan nama main.yml
 
+Di dalamnya terdapat kode seperti berikut:
+```
+ deploy:
+    name: Deploy to Railway
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli
+
+      - name: Deploy with Railway
+        run: railway up --service Modul-1
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+```
+Potongan kode di atas digunakan untuk mendeploy tiap kali ada perubahan di dalam repository ini.
