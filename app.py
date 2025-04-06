@@ -1,4 +1,5 @@
-from flask import Flask, jsonify
+from flask import Flask, Response
+import json
 import time
 import datetime
 
@@ -12,10 +13,12 @@ def health():
         "nama": "Tom Marvolo Riddle",
         "nrp": "5025239999",
         "status": "UP",
-        "timestamp": datetime.datetime.utcnow().isoformat() + "Z",
+        "timestamp": datetime.datetime.utcnow().isoformat(),
         "uptime": f"{uptime:.2f} seconds"
     }
-    return jsonify(response)
+    pretty_json = json.dumps(response, indent=4)
+
+    return Response(pretty_json, mimetype='application/json')
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=80)
+    app.run(host="0.0.0.0", port=30000)
